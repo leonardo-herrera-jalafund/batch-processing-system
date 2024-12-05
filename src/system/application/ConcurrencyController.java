@@ -10,13 +10,16 @@ public class ConcurrencyController {
 
     public synchronized void acquire() throws InterruptedException {
         while (currentTaskCount >= maxConcurrentTasks) {
+            System.out.println("Waiting: Thread " + Thread.currentThread().getName() + " | Current Tasks: " + currentTaskCount);
             wait();
         }
         currentTaskCount++;
+        System.out.println("Acquired: Thread " + Thread.currentThread().getName() + " | Current Tasks: " + currentTaskCount);
     }
 
     public synchronized void release() {
         currentTaskCount--;
+        System.out.println("Released: Thread " + Thread.currentThread().getName() + " | Current Tasks: " + currentTaskCount);
         notifyAll();
     }
 }
