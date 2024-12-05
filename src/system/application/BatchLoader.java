@@ -2,20 +2,29 @@ package system.application;
 
 import system.domain.Batch;
 import system.domain.DataItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class BatchLoader {
     private final BatchProcessor batchProcessor = new BatchProcessor();
+    private final ConcurrencyController concurrencyController = new ConcurrencyController(5); // Limit to 5 concurrent batches
 
     public void loadData() {
         List<DataItem> dataItems = fetchDataFromSource();
-
         List<Batch> batches = splitIntoBatches(dataItems);
 
         for (Batch batch : batches) {
-            new Thread(() -> batchProcessor.processBatch(batch)).start();
+            new Thread(() -> {
+                try {
+                    concurrencyController.acquire();
+                    batchProcessor.processBatch(batch);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                } finally {
+                    concurrencyController.release();
+                }
+            }).start();
         }
     }
 
