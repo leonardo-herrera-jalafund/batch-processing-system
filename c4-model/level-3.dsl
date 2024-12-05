@@ -1,8 +1,8 @@
 workspace {
 
     model {
-        system = softwareSystem "High-Throughput Batch Processing System" {
-            batchProcessor = container "Batch Processor" "Processes each batch of data asynchronously with parallelism." "Async Service"
+        system = softwareSystem "High-Throughput system.domain.Batch Processing System" {
+            batchProcessor = container "system.domain.Batch Processor" "Processes each batch of data asynchronously with parallelism." "Async Service"
 
             concurrencyController = container "Concurrency Controller" "Manages the concurrent processing of multiple data batches." "Concurrency Management"
     
