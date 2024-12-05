@@ -6,7 +6,7 @@ workspace {
             description "User or system initiating batch processing jobs"
         }
 
-        batchProcessingSystem = softwareSystem "High-Throughput Batch Processing System" {
+        batchProcessingSystem = softwareSystem "High-Throughput system.domain.Batch Processing System" {
             description "Asynchronous batch data processing system for high-speed ETL, data migration, and bulk processing."
         }
         

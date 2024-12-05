@@ -1,3 +1,5 @@
+package system.domain;
+
 public class DataItem {
     private final String name;
     private boolean processed;
@@ -21,7 +23,7 @@ public class DataItem {
 
     @Override
     public String toString() {
-        return "DataItem{" +
+        return "system.domain.DataItem{" +
                 "name='" + name + '\'' +
                 ", processed=" + processed +
                 '}';

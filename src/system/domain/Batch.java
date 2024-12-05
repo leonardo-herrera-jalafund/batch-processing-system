@@ -1,3 +1,5 @@
+package system.domain;
+
 import java.util.List;
 
 public class Batch {

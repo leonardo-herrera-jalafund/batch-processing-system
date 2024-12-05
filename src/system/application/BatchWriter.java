@@ -1,3 +1,8 @@
+package system.application;
+
+import system.domain.Batch;
+import system.domain.DataItem;
+
 public class BatchWriter {
     private final FlowController flowController = new FlowController();
 
