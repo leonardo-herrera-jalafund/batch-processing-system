@@ -22,8 +22,7 @@ public class BatchProcessor {
 
     private void processItem(DataItem item) {
         try {
-            Thread.sleep(50); // Simulate processing time
-            item.setProcessed(true);
+            Thread.sleep(50);
             System.out.println("Processed: " + item);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
