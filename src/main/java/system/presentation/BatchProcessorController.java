@@ -43,7 +43,7 @@ public class BatchProcessorController implements HttpHandler {
                 List<Batch> batches = batchLoader.processDirectory(directoryPath);
                 ResultHandler resultHandler = new ResultHandler(batches);
                 for (Batch batch : batches) {
-                    batchProcessor.processBatch(batch, resultHandler);
+                        batchProcessor.processBatch(batch, resultHandler);
                 }
 
                 String response = "{ \"batchesProcessed\": " + batches.size() + " }";

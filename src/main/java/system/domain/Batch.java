@@ -8,10 +8,19 @@ public class Batch {
     private final List<DataItem> items;
 
     public Batch(List<DataItem> items) {
+        this.id = UUID.randomUUID();
         this.items = items;
     }
 
     public List<DataItem> getItems() {
         return items;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

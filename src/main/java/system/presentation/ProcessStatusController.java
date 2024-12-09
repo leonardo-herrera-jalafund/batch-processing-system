@@ -17,7 +17,7 @@ public class ProcessStatusController implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if ("GET".equals(exchange.getRequestMethod())) {
-            String response = serializeProcessResultToJson(processResult);
+            String response = "";
 
             exchange.getResponseHeaders().set("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, response.length());

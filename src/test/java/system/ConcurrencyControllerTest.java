@@ -1,4 +1,4 @@
-package system;
+package java.system;
 
 import org.junit.Test;
 import system.application.ConcurrencyController;
