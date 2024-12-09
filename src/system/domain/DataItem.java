@@ -8,7 +8,22 @@ public class DataItem {
 
     public DataItem(Invoice invoice) {
         this.id = UUID.randomUUID();
-        this.invoice = null;
+        this.invoice = invoice;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 }

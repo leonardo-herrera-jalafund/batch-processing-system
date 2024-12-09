@@ -44,11 +44,8 @@ public class BatchLoader {
                     continue;
                 }
 
-                try {
-                    Invoice invoice = parseLineToInvoice(line);
-                    dataItems.add(new DataItem(invoice));
-                } catch (Exception ignored) {}
-                    throw new InvalidCSVException("Error parsing CSV file: " + csvFile.getName());
+                Invoice invoice = parseLineToInvoice(line);
+                dataItems.add(new DataItem(invoice));
             }
         }
         return dataItems;
@@ -56,25 +53,30 @@ public class BatchLoader {
 
     private Invoice parseLineToInvoice(String line) {
         String[] parts = line.split(",");
-        return new Invoice(
-                parts[0],
-                parts[1],
-                parts[2],
-                parts[3],
-                parts[4],
-                parts[5],
-                Double.parseDouble(parts[6]),
-                Integer.parseInt(parts[7]),
-                Double.parseDouble(parts[8]),
-                Double.parseDouble(parts[9]),
-                parts[10],
-                parts[11],
-                parts[12],
-                Double.parseDouble(parts[13]),
-                Double.parseDouble(parts[14]),
-                Double.parseDouble(parts[15]),
-                Double.parseDouble(parts[16])
-        );
+        try {
+            return new Invoice(
+                    parts[0],
+                    parts[1],
+                    parts[2],
+                    parts[3],
+                    parts[4],
+                    parts[5],
+                    Double.parseDouble(parts[6]),
+                    Integer.parseInt(parts[7]),
+                    Double.parseDouble(parts[8]),
+                    Double.parseDouble(parts[9]),
+                    parts[10],
+                    parts[11],
+                    parts[12],
+                    Double.parseDouble(parts[13]),
+                    Double.parseDouble(parts[14]),
+                    Double.parseDouble(parts[15]),
+                    Double.parseDouble(parts[16])
+            );
+        } catch (RuntimeException e) {
+            throw new InvalidCSVException("Error parsing CSV file: " + line);
+        }
+
     }
 
     private List<Batch> createBatches(List<DataItem> dataItems) {
