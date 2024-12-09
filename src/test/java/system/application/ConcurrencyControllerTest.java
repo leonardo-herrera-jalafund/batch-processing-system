@@ -1,11 +1,9 @@
-package java.system;
-
-import org.junit.Test;
+import org.testng.annotations.Test;
 import system.application.ConcurrencyController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 
 public class ConcurrencyControllerTest {

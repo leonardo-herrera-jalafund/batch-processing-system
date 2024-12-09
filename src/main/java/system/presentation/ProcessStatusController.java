@@ -17,7 +17,7 @@ public class ProcessStatusController implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if ("GET".equals(exchange.getRequestMethod())) {
-            String response = "";
+            String response = serializeProcessResultToJson(processResult);
 
             exchange.getResponseHeaders().set("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, response.length());
@@ -30,9 +30,13 @@ public class ProcessStatusController implements HttpHandler {
     }
 
     private String serializeProcessResultToJson(ProcessResult result) {
+        if (result == null) {
+            return "{\n\"Result\": \"Null\" \n}";
+        }
+
         StringBuilder jsonBuilder = new StringBuilder();
         jsonBuilder.append("{")
-                .append("\"processId\":\"").append(result.getProcessId()).append("\",")
+                .append("\"processId\":\"").append(result.getProcessId() != null ? result.getProcessId() : "N/A").append("\",")
                 .append("\"status\":").append(result.isStatus()).append(",")
                 .append("\"totalBatches\":").append(result.getTotalBatches()).append(",")
                 .append("\"completedBatches\":").append(result.getCompletedBatches()).append(",")
@@ -42,14 +46,20 @@ public class ProcessStatusController implements HttpHandler {
                 .append("\"averageRating\":").append(result.getAverageRating()).append(",")
                 .append("\"errorMessages\":[");
 
-        for (int i = 0; i < result.getErrorMessages().size(); i++) {
-            jsonBuilder.append("\"").append(result.getErrorMessages().get(i)).append("\"");
-            if (i < result.getErrorMessages().size() - 1) {
-                jsonBuilder.append(",");
+        if (result.getErrorMessages() == null || result.getErrorMessages().isEmpty()) {
+            jsonBuilder.append("\"No errors\"]");
+        } else {
+            for (int i = 0; i < result.getErrorMessages().size(); i++) {
+                String errorMessage = result.getErrorMessages().get(i) != null ? result.getErrorMessages().get(i) : "Unknown error";
+                jsonBuilder.append("\"").append(errorMessage).append("\"");
+                if (i < result.getErrorMessages().size() - 1) {
+                    jsonBuilder.append(",");
+                }
             }
+            jsonBuilder.append("]");
         }
 
-        jsonBuilder.append("]}");
+        jsonBuilder.append("}");
         return jsonBuilder.toString();
     }
 }
