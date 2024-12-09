@@ -1,6 +1,9 @@
 package system.domain;
 
+import java.util.UUID;
+
 public class DataItem {
+    private UUID id;
     private final String name;
     private boolean processed;
 
