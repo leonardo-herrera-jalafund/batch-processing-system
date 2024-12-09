@@ -2,7 +2,7 @@ package system.presentation;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import system.application.services.FileProcessorService;
+import system.application.BatchLoader;
 import system.domain.Batch;
 
 import java.io.File;
@@ -11,10 +11,10 @@ import java.io.OutputStream;
 import java.util.List;
 
 public class BatchProcessorController implements HttpHandler {
-    private final FileProcessorService fileProcessorService;
+    private final BatchLoader batchLoader;
 
-    public BatchProcessorController(FileProcessorService fileProcessorService) {
-        this.fileProcessorService = fileProcessorService;
+    public BatchProcessorController(BatchLoader batchLoader) {
+        this.batchLoader = batchLoader;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class BatchProcessorController implements HttpHandler {
             }
 
             try {
-                List<Batch> batches = fileProcessorService.processDirectory(directoryPath);
+                List<Batch> batches = batchLoader.processDirectory(directoryPath);
                 String response = "{ \"batchesProcessed\": " + batches.size() + " }";
 
                 exchange.getResponseHeaders().set("Content-Type", "application/json");

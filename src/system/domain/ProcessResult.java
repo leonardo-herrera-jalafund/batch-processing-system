@@ -1,10 +1,12 @@
 package system.domain;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ProcessResult {
     private UUID processId;
     private boolean status;
+    private List<Batch> batches;
 
     public ProcessResult() {
         this.processId = UUID.randomUUID();

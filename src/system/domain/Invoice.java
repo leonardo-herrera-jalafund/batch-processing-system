@@ -1,10 +1,5 @@
 package system.domain;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
-
-//Invoice ID,Branch,City,Customer type,Gender,Product line,Unit price,Quantity,Tax 5%,Total,Date,Time,Payment,cogs,gross margin percentage,gross income,Rating
 public class Invoice {
     private String invoiceId;
     private String branch;
