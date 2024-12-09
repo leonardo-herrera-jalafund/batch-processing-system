@@ -3,6 +3,7 @@ package system.application;
 import system.domain.Batch;
 import system.domain.DataItem;
 import system.domain.Invoice;
+import system.domain.exceptions.InvalidCSVException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,8 +43,12 @@ public class BatchLoader {
                     isFirstLine = false;
                     continue;
                 }
-                Invoice invoice = parseLineToInvoice(line);
-                dataItems.add(new DataItem(invoice));
+
+                try {
+                    Invoice invoice = parseLineToInvoice(line);
+                    dataItems.add(new DataItem(invoice));
+                } catch (Exception ignored) {}
+                    throw new InvalidCSVException("Error parsing CSV file: " + csvFile.getName());
             }
         }
         return dataItems;

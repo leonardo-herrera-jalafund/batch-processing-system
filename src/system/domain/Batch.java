@@ -6,6 +6,7 @@ import java.util.UUID;
 public class Batch {
     private UUID id;
     private final List<DataItem> items;
+    private boolean status;
 
     public Batch(List<DataItem> items) {
         this.items = items;

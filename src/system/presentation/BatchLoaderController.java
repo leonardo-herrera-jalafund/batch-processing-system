@@ -4,16 +4,17 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import system.application.BatchLoader;
 import system.domain.Batch;
+import system.domain.exceptions.InvalidCSVException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-public class BatchProcessorController implements HttpHandler {
+public class BatchLoaderController implements HttpHandler {
     private final BatchLoader batchLoader;
 
-    public BatchProcessorController(BatchLoader batchLoader) {
+    public BatchLoaderController(BatchLoader batchLoader) {
         this.batchLoader = batchLoader;
     }
 
@@ -46,6 +47,8 @@ public class BatchProcessorController implements HttpHandler {
                 }
             } catch (IOException e) {
                 sendErrorResponse(exchange, 500, "Error processing files: " + e.getMessage());
+            } catch (InvalidCSVException e) {
+                sendErrorResponse(exchange, 400, "Bad request:  " + e.getMessage());
             }
         } else {
             exchange.sendResponseHeaders(405, -1);

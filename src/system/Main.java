@@ -2,7 +2,7 @@ package system;
 
 import com.sun.net.httpserver.HttpServer;
 import system.application.BatchLoader;
-import system.presentation.BatchProcessorController;
+import system.presentation.BatchLoaderController;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -13,7 +13,7 @@ public class Main {
 
         BatchLoader batchLoader = new BatchLoader();
 
-        server.createContext("/api/batch-processor", new BatchProcessorController(batchLoader));
+        server.createContext("/api/batch-processor", new BatchLoaderController(batchLoader));
 
         server.setExecutor(null);
         System.out.println("Server stated at http://localhost:8080");
