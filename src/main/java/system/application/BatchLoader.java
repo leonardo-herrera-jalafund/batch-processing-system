@@ -3,7 +3,6 @@ package system.application;
 import system.domain.Batch;
 import system.domain.DataItem;
 import system.domain.Invoice;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -42,34 +41,41 @@ public class BatchLoader {
                     isFirstLine = false;
                     continue;
                 }
-                Invoice invoice = parseLineToInvoice(line);
-                dataItems.add(new DataItem(invoice));
+                try {
+                    Invoice invoice = parseLineToInvoice(line);
+                    if (invoice != null) {
+                        dataItems.add(new DataItem(invoice));
+                    } else {
+                        System.out.println("Skipping invalid invoice: " + line);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error parsing line: " + line + " | Error: " + e.getMessage());
+                }
             }
         }
         return dataItems;
     }
 
+
     private Invoice parseLineToInvoice(String line) {
         String[] parts = line.split(",");
-        return new Invoice(
-                parts[0],
-                parts[1],
-                parts[2],
-                parts[3],
-                parts[4],
-                parts[5],
-                Double.parseDouble(parts[6]),
-                Integer.parseInt(parts[7]),
-                Double.parseDouble(parts[8]),
-                Double.parseDouble(parts[9]),
-                parts[10],
-                parts[11],
-                parts[12],
-                Double.parseDouble(parts[13]),
-                Double.parseDouble(parts[14]),
-                Double.parseDouble(parts[15]),
-                Double.parseDouble(parts[16])
-        );
+        try {
+            if (parts.length != 17) {
+                throw new IllegalArgumentException("Incorrect number of columns in line: " + line);
+            }
+
+            return new Invoice(
+                    parts[0], parts[1], parts[2], parts[3], parts[4], parts[5],
+                    Double.parseDouble(parts[6]), Integer.parseInt(parts[7]),
+                    Double.parseDouble(parts[8]), Double.parseDouble(parts[9]),
+                    parts[10], parts[11], parts[12],
+                    Double.parseDouble(parts[13]), Double.parseDouble(parts[14]),
+                    Double.parseDouble(parts[15]), Double.parseDouble(parts[16])
+            );
+        } catch (Exception e) {
+            System.out.println("Error parsing invoice from line: " + line + " | Error: " + e.getMessage());
+            return null;
+        }
     }
 
     private List<Batch> createBatches(List<DataItem> dataItems) {

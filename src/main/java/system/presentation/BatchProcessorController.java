@@ -3,18 +3,26 @@ package system.presentation;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import system.application.BatchLoader;
+import system.application.BatchProcessor;
+import system.application.BatchWriter;
 import system.domain.Batch;
+import system.domain.ProcessResult;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+
 public class BatchProcessorController implements HttpHandler {
     private final BatchLoader batchLoader;
+    private final BatchProcessor batchProcessor;
+    private final ProcessResult processResult;
 
-    public BatchProcessorController(BatchLoader batchLoader) {
+    public BatchProcessorController(BatchLoader batchLoader, BatchProcessor batchProcessor, ProcessResult processResult) {
         this.batchLoader = batchLoader;
+        this.batchProcessor = batchProcessor;
+        this.processResult = processResult;
     }
 
     @Override
@@ -37,6 +45,11 @@ public class BatchProcessorController implements HttpHandler {
 
             try {
                 List<Batch> batches = batchLoader.processDirectory(directoryPath);
+                BatchWriter batchWriter = new BatchWriter(batches, processResult);
+                for (Batch batch : batches) {
+                        batchProcessor.processBatch(batch, batchWriter);
+                }
+
                 String response = "{ \"batchesProcessed\": " + batches.size() + " }";
 
                 exchange.getResponseHeaders().set("Content-Type", "application/json");
@@ -66,4 +79,3 @@ public class BatchProcessorController implements HttpHandler {
         }
     }
 }
-

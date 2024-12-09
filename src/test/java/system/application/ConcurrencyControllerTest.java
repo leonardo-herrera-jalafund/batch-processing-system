@@ -1,11 +1,13 @@
-package system;
+package system.application;
 
-import org.junit.Test;
-import system.application.ConcurrencyController;
+
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ConcurrencyControllerTest {
