@@ -3,6 +3,9 @@ package system.application;
 import system.domain.Batch;
 import system.domain.DataItem;
 import system.domain.Invoice;
+import system.domain.exceptions.EmptyDirectoryException;
+import system.domain.exceptions.InvalidCSVException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,7 +22,7 @@ public class BatchLoader {
         File[] csvFiles = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".csv"));
 
         if (csvFiles == null || csvFiles.length == 0) {
-            throw new IOException("No CSV files found in the directory.");
+            throw new EmptyDirectoryException("No CSV files found in the directory.");
         }
 
         List<DataItem> dataItems = new ArrayList<>();
@@ -49,7 +52,7 @@ public class BatchLoader {
                         System.out.println("Skipping invalid invoice: " + line);
                     }
                 } catch (Exception e) {
-                    System.out.println("Error parsing line: " + line + " | Error: " + e.getMessage());
+                    throw new InvalidCSVException("Error parsing line: " + line + " | Error: " + e.getMessage());
                 }
             }
         }
@@ -61,7 +64,7 @@ public class BatchLoader {
         String[] parts = line.split(",");
         try {
             if (parts.length != 17) {
-                throw new IllegalArgumentException("Incorrect number of columns in line: " + line);
+                throw new InvalidCSVException("Incorrect number of columns in line: " + line);
             }
 
             return new Invoice(
@@ -73,8 +76,7 @@ public class BatchLoader {
                     Double.parseDouble(parts[15]), Double.parseDouble(parts[16])
             );
         } catch (Exception e) {
-            System.out.println("Error parsing invoice from line: " + line + " | Error: " + e.getMessage());
-            return null;
+            throw new InvalidCSVException("Error parsing line: " + line + " | Error: " + e.getMessage());
         }
     }
 

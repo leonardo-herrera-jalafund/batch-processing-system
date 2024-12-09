@@ -14,12 +14,12 @@ import java.io.OutputStream;
 import java.util.List;
 
 
-public class BatchProcessorController implements HttpHandler {
+public class BatchLoaderController implements HttpHandler {
     private final BatchLoader batchLoader;
     private final BatchProcessor batchProcessor;
     private final ProcessResult processResult;
 
-    public BatchProcessorController(BatchLoader batchLoader, BatchProcessor batchProcessor, ProcessResult processResult) {
+    public BatchLoaderController(BatchLoader batchLoader, BatchProcessor batchProcessor, ProcessResult processResult) {
         this.batchLoader = batchLoader;
         this.batchProcessor = batchProcessor;
         this.processResult = processResult;
@@ -58,7 +58,7 @@ public class BatchProcessorController implements HttpHandler {
                     os.write(response.getBytes());
                 }
             } catch (IOException e) {
-                sendErrorResponse(exchange, 500, "Error processing files: " + e.getMessage());
+                sendErrorResponse(exchange, 500, "Internal server error: " + e.getMessage());
             }
         } else {
             exchange.sendResponseHeaders(405, -1);
