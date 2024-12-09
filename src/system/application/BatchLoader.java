@@ -37,7 +37,7 @@ public class BatchLoader {
     private List<DataItem> fetchDataFromSource() {
         List<DataItem> dataItems = new ArrayList<>();
         for (int i = 1; i <= 100; i++) {
-            dataItems.add(new DataItem("Item-" + i));
+            dataItems.add(new DataItem(null));
         }
         return dataItems;
     }

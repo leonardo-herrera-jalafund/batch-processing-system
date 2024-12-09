@@ -2,13 +2,21 @@ package system.presentation;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import system.domain.ProcessResult;
+import system.application.services.FileProcessorService;
+import system.domain.Batch;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 public class BatchProcessorController implements HttpHandler {
+    private final FileProcessorService fileProcessorService;
+
+    public BatchProcessorController(FileProcessorService fileProcessorService) {
+        this.fileProcessorService = fileProcessorService;
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if ("POST".equals(exchange.getRequestMethod())) {
@@ -27,16 +35,17 @@ public class BatchProcessorController implements HttpHandler {
                 return;
             }
 
-            ProcessResult processResult = new ProcessResult();
+            try {
+                List<Batch> batches = fileProcessorService.processDirectory(directoryPath);
+                String response = "{ \"batchesProcessed\": " + batches.size() + " }";
 
-            String response = "{ \"Process started\": \"id " +
-                    processResult.getProcessId() +
-                    "\" }";
-
-            exchange.getResponseHeaders().set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(200, response.length());
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, response.length());
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(response.getBytes());
+                }
+            } catch (IOException e) {
+                sendErrorResponse(exchange, 500, "Error processing files: " + e.getMessage());
             }
         } else {
             exchange.sendResponseHeaders(405, -1);
@@ -57,3 +66,4 @@ public class BatchProcessorController implements HttpHandler {
         }
     }
 }
+
