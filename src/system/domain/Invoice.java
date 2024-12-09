@@ -2,6 +2,8 @@ package system.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
+
 //Invoice ID,Branch,City,Customer type,Gender,Product line,Unit price,Quantity,Tax 5%,Total,Date,Time,Payment,cogs,gross margin percentage,gross income,Rating
 public class Invoice {
     private String invoiceId;
@@ -14,8 +16,8 @@ public class Invoice {
     private int quantity;
     private double tax;
     private double total;
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
+    private String time;
     private String payment;
     private double cogs;
     private double grossMarginPercentage;
@@ -33,8 +35,8 @@ public class Invoice {
             int quantity,
             double tax,
             double total,
-            LocalDate date,
-            LocalTime time,
+            String date,
+            String time,
             String payment,
             double cogs,
             double grossMarginPercentage,
@@ -140,19 +142,19 @@ public class Invoice {
         this.total = total;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

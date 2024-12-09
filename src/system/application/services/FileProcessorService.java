@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FileProcessorService {
@@ -37,7 +38,7 @@ public class FileProcessorService {
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
-            boolean isFirstLine = true; // Assume the first line is a header
+            boolean isFirstLine = true;
             while ((line = br.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false;
@@ -51,7 +52,7 @@ public class FileProcessorService {
     }
 
     private Invoice parseLineToInvoice(String line) {
-        String[] parts = line.split(","); // Adjust delimiter if needed
+        String[] parts = line.split(",");
         return new Invoice(
                 parts[0],
                 parts[1],
@@ -63,8 +64,8 @@ public class FileProcessorService {
                 Integer.parseInt(parts[7]),
                 Double.parseDouble(parts[8]),
                 Double.parseDouble(parts[9]),
-                LocalDate.parse(parts[10]),
-                LocalTime.parse(parts[11]),
+                parts[10],
+                parts[11],
                 parts[12],
                 Double.parseDouble(parts[13]),
                 Double.parseDouble(parts[14]),
