@@ -3,7 +3,6 @@ package system;
 import com.sun.net.httpserver.HttpServer;
 import system.application.BatchLoader;
 import system.application.BatchProcessor;
-import system.application.ResultHandler;
 import system.domain.ProcessResult;
 import system.presentation.BatchProcessorController;
 import system.presentation.ProcessStatusController;
@@ -19,7 +18,7 @@ public class Main {
         BatchProcessor batchProcessor = new BatchProcessor(5);
         ProcessResult processResult = new ProcessResult();
 
-        server.createContext("/api/batch-processor", new BatchProcessorController(batchLoader, batchProcessor));
+        server.createContext("/api/batch-processor", new BatchProcessorController(batchLoader, batchProcessor, processResult));
         server.createContext("/api/status", new ProcessStatusController(processResult));
 
         server.setExecutor(null);
